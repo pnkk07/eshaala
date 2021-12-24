@@ -85,13 +85,29 @@ class UserController extends Controller
                 'lastname' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed','regex:/[a-z]/','regex:/[A-z]/','regex:/[@$!%*#?&]/','regex:/[0-9]/'],
-            ]);
+            ],
+            [
+                'password.regex' => 'Password must have 
+                - one uppercase letter,
+                    one lowercase letter,
+                    one numeric value,
+                    one special character (@$!%*#?&)'
+            ]
+        );
         }elseif($data->email == $request->email && $request->password != ""){
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'lastname' => ['required', 'string', 'max:255'],
                 'password' => ['required', 'string', 'min:8', 'confirmed','regex:/[a-z]/','regex:/[A-z]/','regex:/[@$!%*#?&]/','regex:/[0-9]/'],
-            ]);
+            ],
+            [
+                'password.regex' => 'Password must have 
+                - one uppercase letter,
+                    one lowercase letter,
+                    one numeric value,
+                    one special character (@$!%*#?&)'
+            ]
+        );
         }else{
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -114,9 +130,8 @@ class UserController extends Controller
         if($request->password!=""){
             $data->password=Hash::make($request->password);
         }
-      
-            $data->save();
-            return redirect()->back()->with('message','Record updated successfully');
+        $data->save();
+        return redirect()->back()->with('message','Record updated successfully');
 
     }
 
